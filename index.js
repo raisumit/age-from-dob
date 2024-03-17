@@ -9,7 +9,19 @@ dateForm.addEventListener('submit',function(e){
 
  }
 });
-
+/* 
+   logic to calculate the no of day when the current day is less then users birth day
+   as for this simply substracting currentday and birthday is not fesable take and e.g. 
+   if the user is born on 31 jan and current day is 1 feb than substractin would result in 30 or -30
+   which would be incorrect so here we would use a logic wehre we would first calculate
+   total no of day in previous month (new Date('year', 'month',0).getDate()//this will give total no of day in that month)
+   now we can substract users birth day from total no of days e.g 31 - 31 = 0 now we will add current day to this 
+   to find how many day user have lived here we are concerned only for day not month that we will take care by other logic
+   so 0 + 1 = 1 which is correct for the above example wehre user is borned on 31 jan and current day is 1
+   he has lived one more day
+   this is represented by this logic in the code below
+(new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24);
+   */
 function caculateAge(dob){
  const currentDate = new Date();
  const currentYear = currentDate.getFullYear();
