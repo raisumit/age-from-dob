@@ -19,6 +19,7 @@ dateForm.addEventListener('submit',function(e){
    to find how many day user have lived here we are concerned only for day not month that we will take care by other logic
    so 0 + 1 = 1 which is correct for the above example wehre user is borned on 31 jan and current day is 1
    he has lived one more day
+   this below logic was used earlier but it has some edge case failure so we switch back to above long logic
    this is represented by this logic in the code below
 (new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24);
    */
@@ -45,7 +46,9 @@ function caculateAge(dob){
   }
   if(currentDay < birthDay){
    userAge.month = userAge.month - 1;
-   userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24)+1;
+   let dayInPrevMonth = new Date(currentYear,currentMonth,0).getDate();
+   userAge.day = (dayInPrevMonth - birthDay) + currentDay;
+   // userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(currentYear,currentMonth-1,birthDay))/(1000*60*60*24)+1;
   }
  }
  if(currentMonth == birthMonth){
@@ -58,7 +61,16 @@ function caculateAge(dob){
    userAge.day = currentDay - birthDay;
   }
   if(currentDay < birthDay){
-    userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24)+1;
+   userAge.month = 11;
+   if(currentMonth){
+      let maxDayPrevMonth = new Date(currentYear,currentMonth,0).getDate();
+      userAge.day = (maxDayPrevMonth - birthDay) + currentDay;
+      
+   }else{
+      let maxDayPrevMonth = new Date(currentYear,12,0).getDate();
+      userAge.day = (maxDayPrevMonth - birthDay) + currentDay;
+   }
+   //  userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(currentYear,birthMonth,birthDay))/(1000*60*60*24)+1;
   }
  }
  if(currentMonth < birthMonth){
@@ -72,7 +84,14 @@ function caculateAge(dob){
   }
   if(currentDay < birthDay){
    userAge.month = userAge.month - 1;
-   userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24)+1;
+   if(currentMonth){
+      let maxDayPrevMonth = new Date(currentYear,currentMonth,0).getDate();
+      userAge.day = (maxDayPrevMonth - birthDay) + currentDay;
+   }else{
+      let maxDayPrevMonth = new Date(currentYear,12,0).getDate();
+      userAge.day = (maxDayPrevMonth - birthDay) + currentDay;
+   }
+   //userAge.day = (new Date(currentYear,currentMonth, currentDay) - new Date(birthYear,birthMonth,birthDay))/(1000*60*60*24)+1;
   }
  }
  document.querySelector('.years').innerHTML = userAge.years;
